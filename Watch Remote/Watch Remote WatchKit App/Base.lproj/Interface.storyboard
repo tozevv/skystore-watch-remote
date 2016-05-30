@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="AgC-eL-Hgc">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="10032"/>
+    </dependencies>
+    <scenes>
+        <!--Interface Controller-->
+        <scene sceneID="aou-V4-d1y">
+            <objects>
+                <controller id="AgC-eL-Hgc" customClass="InterfaceController" customModule="Watch_Remote_WatchKit_App" customModuleProvider="target">
+                    <items>
+                        <label alignment="left" text="Label" id="X0Q-Mr-jR6"/>
+                        <button width="1" alignment="left" title="Play" id="Ol7-V0-gfc">
+                            <connections>
+                                <action selector="click" destination="AgC-eL-Hgc" id="dfX-eJ-nyv"/>
+                            </connections>
+                        </button>
+                    </items>
+                    <connections>
+                        <outlet property="button" destination="Ol7-V0-gfc" id="Q3Q-9i-2GM"/>
+                        <outlet property="heartRateLabel" destination="X0Q-Mr-jR6" id="hTl-V8-xsW"/>
+                    </connections>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="164" y="217"/>
+        </scene>
+        <!--Glance Interface Controller-->
+        <scene sceneID="rjY-Ar-IMT">
+            <objects>
+                <glanceController spacing="0.0" id="Sv0-Ai-Zie" customClass="GlanceController" customModule="Watch_Remote_WatchKit_App" customModuleProvider="target">
+                    <items>
+                        <group alignment="left" id="gv7-I2-MZq"/>
+                        <group alignment="left" id="eew-Gs-W6Y"/>
+                    </items>
+                    <edgeInsets key="margins" left="0.0" right="0.0" top="0.0" bottom="14"/>
+                </glanceController>
+            </objects>
+            <point key="canvasLocation" x="164" y="514"/>
+        </scene>
+    </scenes>
+</document>
