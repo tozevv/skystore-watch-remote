@@ -70,6 +70,21 @@ class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate, WCSe
         }
     }
     
+    func readConfig()
+    {
+        let msg = ["config": "config"];
+        
+        session.sendMessage(msg, replyHandler: { (responses) -> Void in
+            self.threshold = responses["threshold"] as! Double
+            self.samplesLast = responses["samples"] as! Int
+            self.steps = responses["steps"] as! Int
+
+        }) { (err) -> Void in
+            print(err)
+        }
+    }
+
+    
     @IBAction func play() {
         startAwayDetection()
         sendCommand("play")
@@ -77,6 +92,7 @@ class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate, WCSe
     
 
     @IBAction func pause() {
+        readConfig()
         stopAwayDetection()
         sendCommand("play")
     }
@@ -96,8 +112,9 @@ class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate, WCSe
     // =========================================================================
     // MARK: - Sleep and Away Detection
     
-    let treshold = 0.75
-    let samplesLast = 5
+    var threshold = 0.75
+    var samplesLast = 5
+    var steps = 20
     
     var heartSamples = [Double]()
     
@@ -112,7 +129,7 @@ class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate, WCSe
         let heartLastAverage = lastSamples.reduce(0, combine: +) / Double(lastSamples.count)
         
         
-        if (heartLastAverage / heartAverage) <= treshold
+        if (heartLastAverage / heartAverage) <= threshold
         {
             sleep()
         }

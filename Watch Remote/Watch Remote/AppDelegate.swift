@@ -32,12 +32,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
     }
     
     func session(session: WCSession, didReceiveMessage message: [String : AnyObject], replyHandler: ([String : AnyObject]) -> Void) {
+        
         print("data received")
         if let keypressed = message["keypressed"] as? String {
             print("pressing key:\(keypressed)")
             
             RokuRemote.Current().sendCommand(keypressed)
         }
+        
+        if let config = message["config"]  as? String {
+            print(config)
+            replyHandler(["threshold": Configs.treshold,
+                          "steps": Configs.steps,
+                          "samples": Configs.samples
+                          ])
+        }
+        
     }
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
