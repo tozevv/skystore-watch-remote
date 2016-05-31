@@ -369,11 +369,13 @@ class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate, WCSe
         dispatch_async(dispatch_get_main_queue()) {
           
             guard let sample = heartRateSamples.first else{return}
-            let value = sample.quantity.doubleValueForUnit(self.heartRateUnit)
-            let intValue = Int(value)
-            self.heartSamples.append(value)
+            if(sample.quantity.isCompatibleWithUnit(self.heartRateUnit)) {
+                let value = sample.quantity.doubleValueForUnit(self.heartRateUnit)
+                let intValue = Int(value)
+                self.heartSamples.append(value)
             
-            self.heartRateLabel.setText( String(UInt16(intValue)))
+                self.heartRateLabel.setText( String(UInt16(intValue)))
+            }
             
             self.detectAwayOrSleep()
             // retrieve source from sample
