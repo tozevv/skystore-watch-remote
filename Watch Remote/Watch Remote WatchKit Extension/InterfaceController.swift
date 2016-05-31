@@ -11,7 +11,7 @@ import Foundation
 import HealthKit
 import WatchConnectivity
 
-class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate {
+class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate, WCSessionDelegate {
     
 
     //@IBOutlet var displayImage: WKInterfaceImage!
@@ -23,9 +23,11 @@ class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate {
     
     let healthStore = HKHealthStore()
     
+    
     var workoutSession : HKWorkoutSession?
     let heartRateUnit = HKUnit(fromString: "count/min")
     var anchor = HKQueryAnchor(fromValue: Int(HKAnchoredObjectQueryNoAnchor))
+    var session: WCSession!
     
     override func awakeWithContext(context: AnyObject?) {
         super.awakeWithContext(context)
@@ -38,6 +40,13 @@ class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate {
 
     override func willActivate() {
         setupHeart()
+        
+        if WCSession.isSupported() {
+            session = WCSession.defaultSession()
+            session.delegate = self
+            session.activateSession()
+        }
+        
         // This method is called when watch view controller is about to be visible to user
         super.willActivate()
     }
@@ -61,6 +70,14 @@ class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate {
     func updateState() {
         if playing {
             self.button.setTitle("Pause")
+            
+            let msg = ["key": "ping"];
+            session.sendMessage(msg, replyHandler: { (responses) -> Void in
+                print(responses)
+            }) { (err) -> Void in
+                print(err)
+            }
+            
             startWorkout()
             
         } else {
