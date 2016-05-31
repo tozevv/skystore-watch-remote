@@ -15,12 +15,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 
     var window: UIWindow?
 
-    var session: WCSession? {
+    var wcsession: WCSession? {
         didSet {
-            if let session = session {
-                session.delegate = self
-                session.activateSession()
+            if let wcsession = wcsession {
+                wcsession.delegate = self
+                wcsession.activateSession()
             }
+        }
+    }
+    
+    func sendRokuCommand(keypressed: String)
+    {
+        let rokuBox: String = "10.241.10.72"
+     
+        if let url: NSURL = NSURL(string: "http://\(rokuBox):8060/keypress/\(keypressed)") {
+            
+            let urlSession = NSURLSession.sharedSession()
+            let dataTask = urlSession.dataTaskWithURL(url, completionHandler: {(data,_,_) in print("done") } )
+            dataTask.resume()
         }
     }
     
@@ -33,7 +45,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
     
     func session(session: WCSession, didReceiveMessage message: [String : AnyObject], replyHandler: ([String : AnyObject]) -> Void) {
         print("data received")
-        replyHandler(["key": "pong"])
+        if let keypressed = message["keypressed"] as? String {
+            print("pressing key:\(keypressed)")
+            sendRokuCommand(keypressed)
+        }
     }
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
@@ -41,13 +56,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
         return true
     }
 
-    func applicationDidFinishLaunching(application: UIApplication) {
-        if WCSession.isSupported() {
-            print("launched session")
-            session = WCSession.defaultSession()
-        }
-    }
-    
     func applicationWillResignActive(application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
@@ -63,12 +71,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
     }
 
     func applicationDidBecomeActive(application: UIApplication) {
-        if WCSession.isSupported() && session == nil {
+        if WCSession.isSupported() && wcsession == nil {
             print("launched session")
-            session = WCSession.defaultSession()
+            wcsession = WCSession.defaultSession()
         }
-        
-        print("here")
+
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     }
 

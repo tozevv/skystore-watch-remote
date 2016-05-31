@@ -62,21 +62,26 @@ class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate, WCSe
     
     @IBAction func click() {
         playing = !playing
+        
+        let msg = ["keypressed": "play"];
+        session.sendMessage(msg, replyHandler: { (responses) -> Void in
+            print("done")
+        }) { (err) -> Void in
+            print(err)
+        }
+
+        
         updateState()
     }
     
     
     
     func updateState() {
+        
         if playing {
             self.button.setTitle("Pause")
             
-            let msg = ["key": "ping"];
-            session.sendMessage(msg, replyHandler: { (responses) -> Void in
-                print(responses)
-            }) { (err) -> Void in
-                print(err)
-            }
+            
             
             startWorkout()
             
