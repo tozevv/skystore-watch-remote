@@ -78,6 +78,34 @@ class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate, WCSe
         stopAwayDetection()
         sendCommand("play")
     }
+    
+    @IBAction func up() {
+        sendCommand("up")
+    }
+    
+    @IBAction func right() {
+        sendCommand("right")
+    }
+    
+    @IBAction func down() {
+        sendCommand("down")
+    }
+    
+    @IBAction func left() {
+        sendCommand("left")
+    }
+    
+    @IBAction func select() {
+        sendCommand("select")
+    }
+    
+    @IBAction func back() {
+        sendCommand("back")
+    }
+    
+    @IBAction func home() {
+        sendCommand("home")
+    }
 
     func sleep() {
         self.stopAwayDetection()

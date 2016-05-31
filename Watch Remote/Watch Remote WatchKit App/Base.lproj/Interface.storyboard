@@ -32,21 +32,49 @@
                         <separator alignment="left" alpha="0.40000000000000002" id="hqa-l3-TKS"/>
                         <group width="1" alignment="left" id="PE6-5W-gpI">
                             <items>
-                                <button width="42" height="40" alignment="left" title="←" id="N20-ci-RUu"/>
-                                <button width="42" height="40" alignment="center" title="▲" id="Ivm-Ot-35l"/>
-                                <button width="42" height="40" alignment="right" title="H" id="Irh-wf-r1F"/>
+                                <button width="42" height="40" alignment="left" title="←" id="N20-ci-RUu">
+                                    <connections>
+                                        <action selector="back" destination="AgC-eL-Hgc" id="bmT-1T-fOv"/>
+                                    </connections>
+                                </button>
+                                <button width="42" height="40" alignment="center" title="▲" id="Ivm-Ot-35l">
+                                    <connections>
+                                        <action selector="up" destination="AgC-eL-Hgc" id="jLn-Xt-znK"/>
+                                    </connections>
+                                </button>
+                                <button width="42" height="40" alignment="right" title="H" id="Irh-wf-r1F">
+                                    <connections>
+                                        <action selector="home" destination="AgC-eL-Hgc" id="XwC-vs-ffP"/>
+                                    </connections>
+                                </button>
                             </items>
                         </group>
                         <group width="1" alignment="left" id="g4R-6e-z1S">
                             <items>
-                                <button width="42" height="40" alignment="left" title="◀︎" id="D7R-Pg-Eb8"/>
-                                <button width="42" height="40" alignment="center" title="●" id="nFs-HM-RYV"/>
-                                <button width="42" height="40" alignment="right" title="▶︎" id="1db-zw-KHT"/>
+                                <button width="42" height="40" alignment="left" title="◀︎" id="D7R-Pg-Eb8">
+                                    <connections>
+                                        <action selector="left" destination="AgC-eL-Hgc" id="IZz-uN-Kya"/>
+                                    </connections>
+                                </button>
+                                <button width="42" height="40" alignment="center" title="●" id="nFs-HM-RYV">
+                                    <connections>
+                                        <action selector="select" destination="AgC-eL-Hgc" id="wDb-KG-Rox"/>
+                                    </connections>
+                                </button>
+                                <button width="42" height="40" alignment="right" title="▶︎" id="1db-zw-KHT">
+                                    <connections>
+                                        <action selector="right" destination="AgC-eL-Hgc" id="VEo-eh-qsb"/>
+                                    </connections>
+                                </button>
                             </items>
                         </group>
                         <group width="1" alignment="left" id="kCd-NR-TWr">
                             <items>
-                                <button width="42" height="40" alignment="center" title="▼" id="qNF-Rt-62x"/>
+                                <button width="42" height="40" alignment="center" title="▼" id="qNF-Rt-62x">
+                                    <connections>
+                                        <action selector="down" destination="AgC-eL-Hgc" id="kO5-g5-hfG"/>
+                                    </connections>
+                                </button>
                             </items>
                         </group>
                         <group width="1" alignment="left" id="uaO-ZA-iiU">
