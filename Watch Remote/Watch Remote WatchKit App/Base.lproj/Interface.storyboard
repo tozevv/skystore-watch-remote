@@ -21,7 +21,7 @@
                         </group>
                         <group width="1" height="60" alignment="left" id="Q38-Oa-5xo">
                             <items>
-                                <imageView alignment="left" id="lr0-gl-Myj"/>
+                                <imageView alignment="left" image="Packshots" id="lr0-gl-Myj"/>
                             </items>
                         </group>
                         <group width="1" alignment="left" semanticContentAttribute="spatial" id="gm7-Uw-esR">

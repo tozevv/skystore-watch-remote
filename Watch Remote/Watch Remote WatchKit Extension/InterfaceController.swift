@@ -32,8 +32,6 @@ class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate, WCSe
     override func awakeWithContext(context: AnyObject?) {
         super.awakeWithContext(context)
     
-        loadData()
-        
     }
 
     override func willActivate() {
@@ -397,25 +395,6 @@ class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate, WCSe
            
             self.detectAwayOrSleep()
             
-        }
-    }
-    
-    // =========================================================================
-    // MARK: - Load dinanic data
-    
-    func loadData() {
-        let api = ApiHandler();
-        let data = api.myLibrary()[0];
-        
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
-            let url:NSURL = NSURL(string:data.ImagePackshotUrl)!
-            let data:NSData = NSData(contentsOfURL: url)!
-            let placeholder = UIImage(data: data)!
-            
-            // update ui
-            dispatch_async(dispatch_get_main_queue()) {
-                self.imagePackshot.setImage(placeholder)
-            }
         }
     }
 }
