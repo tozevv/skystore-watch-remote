@@ -24,6 +24,7 @@ class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate, WCSe
     
     var workoutSession : HKWorkoutSession?
     let heartRateUnit = HKUnit(fromString: "count/min")
+    let stepsUnit = HKUnit.countUnit()
     var anchor = HKQueryAnchor(fromValue: Int(HKAnchoredObjectQueryNoAnchor))
     var session: WCSession!
     
@@ -103,6 +104,7 @@ class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate, WCSe
     var steps = 20
     
     var heartSamples = [Double]()
+    var totalSteps = 0
     
     
     func session(session: WCSession, didReceiveMessage message: [String : AnyObject], replyHandler: ([String : AnyObject]) -> Void) {
@@ -122,6 +124,13 @@ class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate, WCSe
     
     func detectAwayOrSleep()
     {
+        if totalSteps > steps
+        {
+            away()
+            
+            return
+        }
+        
         if samplesLast == 0
         {
             sleep()
@@ -146,6 +155,8 @@ class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate, WCSe
     func startAwayDetection() {
         if (!awayDetection) {
             heartSamples = [Double]()
+            totalSteps = 0;
+            
             self.workoutSession = HKWorkoutSession(activityType: HKWorkoutActivityType.CrossTraining, locationType: HKWorkoutSessionLocationType.Indoor)
             self.workoutSession?.delegate = self
             healthStore.startWorkoutSession(self.workoutSession!)
@@ -156,6 +167,9 @@ class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate, WCSe
     func stopAwayDetection()
     {
         if (awayDetection) {
+            heartSamples = [Double]()
+            totalSteps = 0;
+            
             if let workout = self.workoutSession {
                 healthStore.endWorkoutSession(workout)
             }
@@ -171,12 +185,18 @@ class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate, WCSe
             return
         }
         
-        guard let quantityType = HKQuantityType.quantityTypeForIdentifier(HKQuantityTypeIdentifierHeartRate) else {
+        guard let heartRateType = HKQuantityType.quantityTypeForIdentifier(HKQuantityTypeIdentifierHeartRate) else {
             displayNotAllowed()
             return
         }
         
-        let dataTypes = Set(arrayLiteral: quantityType, HKObjectType.workoutType())
+        guard let stepsType = HKQuantityType.quantityTypeForIdentifier(HKQuantityTypeIdentifierStepCount) else {
+            displayNotAllowed()
+            return
+        }
+        
+        
+        let dataTypes = Set(arrayLiteral: heartRateType, stepsType, HKObjectType.workoutType())
             healthStore.requestAuthorizationToShareTypes(nil, readTypes: dataTypes) { (success, error) -> Void in
             if success == false {
                 self.displayNotAllowed()
@@ -200,6 +220,7 @@ class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate, WCSe
         }
     }
     
+    
     func workoutSession(workoutSession: HKWorkoutSession, didFailWithError error: NSError) {
         // Do nothing for now
         heartRateLabel.setText("Workout error: \(error.userInfo)")
@@ -211,6 +232,12 @@ class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate, WCSe
         } else {
             heartRateLabel.setText("cannot start")
         }
+        
+        if let query = createStepsStreamingQuery(date) {
+            healthStore.executeQuery(query)
+        }
+        
+        
     }
     
     func workoutDidEnd(date : NSDate) {
@@ -235,7 +262,25 @@ class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate, WCSe
             self.anchor = newAnchor!
             self.updateHeartRate(samples)
         }
+        
         return heartRateQuery
+    }
+    
+    func createStepsStreamingQuery(workoutStartDate: NSDate) -> HKQuery? {
+        guard let quantityType = HKObjectType.quantityTypeForIdentifier(HKQuantityTypeIdentifierStepCount) else { return nil }
+        
+        let query = HKAnchoredObjectQuery(type: quantityType, predicate: nil, anchor: anchor, limit: Int(HKObjectQueryNoLimit)) { (query, sampleObjects, deletedObjects, newAnchor, error) -> Void in
+            guard let newAnchor = newAnchor else {return}
+            self.anchor = newAnchor
+            self.updateSteps(sampleObjects)
+        }
+        
+        query.updateHandler = {(query, samples, deleteObjects, newAnchor, error) -> Void in
+            self.anchor = newAnchor!
+            self.updateHeartRate(samples)
+        }
+        
+        return query
     }
     
     func updateHeartRate(samples: [HKSample]?) {
@@ -259,5 +304,17 @@ class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate, WCSe
         }
     }
     
-   
+    func updateSteps(samples: [HKSample]?) {
+        guard let samples = samples as? [HKQuantitySample] else {return}
+        
+        dispatch_async(dispatch_get_main_queue()) {
+            
+            guard let sample = samples.first else{return}
+            let value = sample.quantity.doubleValueForUnit(self.stepsUnit)
+            self.totalSteps += Int(value)
+           
+            self.detectAwayOrSleep()
+            
+        }
+    }
 }
