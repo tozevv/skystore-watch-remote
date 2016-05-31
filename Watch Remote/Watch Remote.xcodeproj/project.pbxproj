@@ -26,6 +26,13 @@
 		4EDBDBF81CFCFE6100245946 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4EDBDBF71CFCFE6100245946 /* Assets.xcassets */; };
 		4EDBDC091CFCFEC900245946 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4EDBDC081CFCFEC900245946 /* HealthKit.framework */; };
 		4EDBDC0B1CFD013D00245946 /* Watch Remote WatchKit Extension.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = 4EDBDC0A1CFD013D00245946 /* Watch Remote WatchKit Extension.entitlements */; };
+		FBDF60021CFDBC080080B101 /* MyLibraryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBDF60011CFDBC080080B101 /* MyLibraryController.swift */; };
+		FBDF60051CFDC1020080B101 /* ApiHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBDF60041CFDC1020080B101 /* ApiHandler.swift */; };
+		FBDF60081CFDC14F0080B101 /* AssetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBDF60071CFDC14F0080B101 /* AssetData.swift */; };
+		FBDF60091CFDC51B0080B101 /* ApiHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBDF60041CFDC1020080B101 /* ApiHandler.swift */; };
+		FBDF600A1CFDC5240080B101 /* AssetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBDF60071CFDC14F0080B101 /* AssetData.swift */; };
+		FBDF600E1CFDCC1A0080B101 /* AssetRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBDF600D1CFDCC1A0080B101 /* AssetRow.swift */; };
+		FBDF60101CFDD8E70080B101 /* AssetRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBDF600D1CFDCC1A0080B101 /* AssetRow.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -95,6 +102,10 @@
 		4EDBDC071CFCFEC900245946 /* Watch Remote.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Watch Remote.entitlements"; sourceTree = "<group>"; };
 		4EDBDC081CFCFEC900245946 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		4EDBDC0A1CFD013D00245946 /* Watch Remote WatchKit Extension.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "Watch Remote WatchKit Extension.entitlements"; sourceTree = "<group>"; };
+		FBDF60011CFDBC080080B101 /* MyLibraryController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyLibraryController.swift; sourceTree = "<group>"; };
+		FBDF60041CFDC1020080B101 /* ApiHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiHandler.swift; sourceTree = "<group>"; };
+		FBDF60071CFDC14F0080B101 /* AssetData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetData.swift; sourceTree = "<group>"; };
+		FBDF600D1CFDCC1A0080B101 /* AssetRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AssetRow.swift; path = "../Watch Remote WatchKit App/AssetRow.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,6 +153,7 @@
 		4EDBDBCB1CFCFE6000245946 /* Watch Remote */ = {
 			isa = PBXGroup;
 			children = (
+				FBDF60031CFDBFE10080B101 /* api */,
 				4EDBDC071CFCFEC900245946 /* Watch Remote.entitlements */,
 				4EDBDBCC1CFCFE6100245946 /* AppDelegate.swift */,
 				4EDBDBCE1CFCFE6100245946 /* ViewController.swift */,
@@ -175,8 +187,27 @@
 				4EDBDBF51CFCFE6100245946 /* ComplicationController.swift */,
 				4EDBDBF71CFCFE6100245946 /* Assets.xcassets */,
 				4EDBDBF91CFCFE6100245946 /* Info.plist */,
+				FBDF600D1CFDCC1A0080B101 /* AssetRow.swift */,
+				FBDF60011CFDBC080080B101 /* MyLibraryController.swift */,
 			);
 			path = "Watch Remote WatchKit Extension";
+			sourceTree = "<group>";
+		};
+		FBDF60031CFDBFE10080B101 /* api */ = {
+			isa = PBXGroup;
+			children = (
+				FBDF60061CFDC1330080B101 /* data */,
+				FBDF60041CFDC1020080B101 /* ApiHandler.swift */,
+			);
+			name = api;
+			sourceTree = "<group>";
+		};
+		FBDF60061CFDC1330080B101 /* data */ = {
+			isa = PBXGroup;
+			children = (
+				FBDF60071CFDC14F0080B101 /* AssetData.swift */,
+			);
+			name = data;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -325,8 +356,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FBDF60081CFDC14F0080B101 /* AssetData.swift in Sources */,
+				FBDF600E1CFDCC1A0080B101 /* AssetRow.swift in Sources */,
 				4EDBDBCF1CFCFE6100245946 /* ViewController.swift in Sources */,
-				4E6367981CFDD485001D3F55 /* Configs.swift in Sources */,
+				FBDF60051CFDC1020080B101 /* ApiHandler.swift in Sources */,
 				4EDBDBCD1CFCFE6100245946 /* AppDelegate.swift in Sources */,
 				4EB2A52C1CFDA4D5003A344A /* Roku.swift in Sources */,
 			);
@@ -337,9 +370,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				4EDBDBF21CFCFE6100245946 /* ExtensionDelegate.swift in Sources */,
+				FBDF60101CFDD8E70080B101 /* AssetRow.swift in Sources */,
+				FBDF60091CFDC51B0080B101 /* ApiHandler.swift in Sources */,
 				4EDBDBF61CFCFE6100245946 /* ComplicationController.swift in Sources */,
+				FBDF600A1CFDC5240080B101 /* AssetData.swift in Sources */,
 				4EDBDBF01CFCFE6100245946 /* InterfaceController.swift in Sources */,
 				4EDBDBF41CFCFE6100245946 /* GlanceController.swift in Sources */,
+				FBDF60021CFDBC080080B101 /* MyLibraryController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -507,16 +544,20 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "iPhone Developer";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				IBSC_MODULE = Watch_Remote_WatchKit_Extension;
 				INFOPLIST_FILE = "Watch Remote WatchKit App/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "uk.sky.Watch-Remote.watchkitapp";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "Watch Remote WatchKit Extension/Watch Remote WatchKit App-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = 4;
 				WATCHOS_DEPLOYMENT_TARGET = 2.2;
 			};
@@ -526,16 +567,19 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "iPhone Developer";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				IBSC_MODULE = Watch_Remote_WatchKit_Extension;
 				INFOPLIST_FILE = "Watch Remote WatchKit App/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "uk.sky.Watch-Remote.watchkitapp";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "Watch Remote WatchKit Extension/Watch Remote WatchKit App-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = 4;
 				WATCHOS_DEPLOYMENT_TARGET = 2.2;
 			};

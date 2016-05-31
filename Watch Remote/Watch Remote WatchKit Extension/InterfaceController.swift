@@ -93,6 +93,14 @@ class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate, WCSe
         sendCommand("search")
     }
 
+    @IBAction func myLibraryMenu() {
+        pushControllerWithName("MyLibrary",
+            context: [
+                "segue": "pagebased", // hierarchical / pagebased
+                "data":"Passed through hierarchical navigation"
+            ]
+        )
+    }
     
    
     
