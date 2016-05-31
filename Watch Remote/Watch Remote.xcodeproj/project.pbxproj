@@ -359,6 +359,7 @@
 				FBDF60081CFDC14F0080B101 /* AssetData.swift in Sources */,
 				FBDF600E1CFDCC1A0080B101 /* AssetRow.swift in Sources */,
 				4EDBDBCF1CFCFE6100245946 /* ViewController.swift in Sources */,
+				4E6367981CFDD485001D3F55 /* Configs.swift in Sources */,
 				FBDF60051CFDC1020080B101 /* ApiHandler.swift in Sources */,
 				4EDBDBCD1CFCFE6100245946 /* AppDelegate.swift in Sources */,
 				4EB2A52C1CFDA4D5003A344A /* Roku.swift in Sources */,
