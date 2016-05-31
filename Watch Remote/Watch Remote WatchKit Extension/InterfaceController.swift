@@ -10,6 +10,7 @@ import WatchKit
 import Foundation
 import HealthKit
 import WatchConnectivity
+import CoreMotion
 
 class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate, WCSessionDelegate {
     
@@ -19,6 +20,7 @@ class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate, WCSe
     
     let healthStore = HKHealthStore()
     var awayDetection = false
+    var timer = NSTimer()
     
     var workoutSession : HKWorkoutSession?
     let heartRateUnit = HKUnit(fromString: "count/min")
@@ -107,13 +109,50 @@ class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate, WCSe
         sendCommand("home")
     }
 
+    @IBAction func dismissSleepOrAway()
+    {
+        timer.invalidate()
+        processingLock = false
+    }
+    
     func sleep() {
-        self.stopAwayDetection()
-        sendCommand("volumedown")
+      
+        
+        WKInterfaceDevice.currentDevice().playHaptic(.Click)
+        // show button
+        
+        timer = NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: #selector(sleepTimeElapsed), userInfo: nil, repeats: false)
+        
+        
+        self.startAwayDetection()
     }
     
     func away() {
         self.stopAwayDetection()
+        
+        WKInterfaceDevice.currentDevice().playHaptic(.Click)
+        // show button
+        
+        timer = NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: #selector(awayTimeElapsed), userInfo: nil, repeats: false)
+        
+    }
+    
+    func sleepTimeElapsed(timer: NSTimer!)
+    {
+        // hide button
+        processingLock = false
+        self.stopAwayDetection()
+        
+        sendCommand("volumedown")
+    }
+
+    
+    func awayTimeElapsed(timer: NSTimer!)
+    {
+        // hide button
+        processingLock = false
+        self.stopAwayDetection()
+        
         sendCommand("search")
     }
 
@@ -137,7 +176,7 @@ class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate, WCSe
     
     var heartSamples = [Double]()
     var totalSteps = 0
-    
+    var processingLock = false
     
     func session(session: WCSession, didReceiveMessage message: [String : AnyObject], replyHandler: ([String : AnyObject]) -> Void) {
         
@@ -156,10 +195,14 @@ class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate, WCSe
     
     func detectAwayOrSleep()
     {
+        if (processingLock) {
+            return;
+        }
+        processingLock = true
+        
         if totalSteps > steps
         {
             away()
-            
             return
         }
         
@@ -169,7 +212,9 @@ class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate, WCSe
             return
         }
         
-        if heartSamples.count < samplesLast * 2 {
+        if heartSamples.count < samplesLast * 2
+        {
+            processingLock = false
             return // not enough data to make a decision
         }
         
@@ -177,11 +222,12 @@ class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate, WCSe
         let lastSamples = heartSamples.suffix(samplesLast)
         let heartLastAverage = lastSamples.reduce(0, combine: +) / Double(lastSamples.count)
         
-        
         if (heartLastAverage / heartAverage) <= threshold
         {
             sleep()
         }
+        
+        processingLock = false
     }
     
     func startAwayDetection() {
