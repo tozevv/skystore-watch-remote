@@ -31,7 +31,7 @@ class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate, WCSe
     
     override func awakeWithContext(context: AnyObject?) {
         super.awakeWithContext(context)
-    
+
     }
 
     override func willActivate() {
@@ -403,7 +403,7 @@ class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate, WCSe
             guard let sample = samples.first else{return}
             let value = sample.quantity.doubleValueForUnit(self.stepsUnit)
             self.totalSteps += Int(value)
-           
+            self.stepsLabel.setText(String(self.totalSteps))
             self.detectAwayOrSleep()
             
         }
