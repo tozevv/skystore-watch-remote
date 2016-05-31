@@ -18,11 +18,9 @@ class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate, WCSe
     @IBOutlet var button: WKInterfaceButton!
     @IBOutlet var heartRateLabel: WKInterfaceLabel!
     
-    var playing:Bool = false
-    
     
     let healthStore = HKHealthStore()
-    
+    var awayDetection = false
     
     var workoutSession : HKWorkoutSession?
     let heartRateUnit = HKUnit(fromString: "count/min")
@@ -39,7 +37,7 @@ class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate, WCSe
     }
 
     override func willActivate() {
-        setupHeart()
+        setupWorkout()
         
         if WCSession.isSupported() {
             session = WCSession.defaultSession()
@@ -59,42 +57,90 @@ class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate, WCSe
     
     // =========================================================================
     // MARK: - Actions
+
     
-    @IBAction func click() {
-        playing = !playing
-        
-        let msg = ["keypressed": "play"];
+    func sendCommand(cmd: String)
+    {
+        let msg = ["keypressed": cmd];
+
         session.sendMessage(msg, replyHandler: { (responses) -> Void in
             print("done")
         }) { (err) -> Void in
             print(err)
         }
-
-        
-        updateState()
     }
     
+    @IBAction func play() {
+        startAwayDetection()
+        sendCommand("play")
+    }
+    
+
+    @IBAction func pause() {
+        stopAwayDetection()
+        sendCommand("play")
+    }
+
+    func sleep() {
+        self.stopAwayDetection()
+        sendCommand("volumedown")
+    }
+    
+    func away() {
+        self.stopAwayDetection()
+        sendCommand("search")
+    }
+
     
     
-    func updateState() {
+    // =========================================================================
+    // MARK: - Sleep and Away Detection
+    
+    let treshold = 0.75
+    let samplesLast = 5
+    
+    var heartSamples = [Double]()
+    
+    func detectAwayOrSleep()
+    {
+        if heartSamples.count < samplesLast * 2 {
+            return // not enough data to make a decision
+        }
         
-        if playing {
-            self.button.setTitle("Pause")
-            
-            
-            
-            startWorkout()
-            
-        } else {
-            self.button.setTitle("Play")
+        let heartAverage = heartSamples.reduce(0, combine: +) / Double(heartSamples.count)
+        let lastSamples = heartSamples.suffix(samplesLast)
+        let heartLastAverage = lastSamples.reduce(0, combine: +) / Double(lastSamples.count)
+        
+        
+        if (heartLastAverage / heartAverage) <= treshold
+        {
+            sleep()
+        }
+        
+    }
+    
+    func startAwayDetection() {
+        if (!awayDetection) {
+            heartSamples = [Double]()
+            self.workoutSession = HKWorkoutSession(activityType: HKWorkoutActivityType.CrossTraining, locationType: HKWorkoutSessionLocationType.Indoor)
+            self.workoutSession?.delegate = self
+            healthStore.startWorkoutSession(self.workoutSession!)
+        }
+        awayDetection = true
+    }
+
+    func stopAwayDetection()
+    {
+        if (awayDetection) {
             if let workout = self.workoutSession {
                 healthStore.endWorkoutSession(workout)
             }
         }
+        awayDetection = false
     }
-
     
-    func setupHeart() {
+    
+    func setupWorkout() {
         
         guard HKHealthStore.isHealthDataAvailable() == true else {
             heartRateLabel.setText("not available")
@@ -107,7 +153,7 @@ class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate, WCSe
         }
         
         let dataTypes = Set(arrayLiteral: quantityType, HKObjectType.workoutType())
-        healthStore.requestAuthorizationToShareTypes(nil, readTypes: dataTypes) { (success, error) -> Void in
+            healthStore.requestAuthorizationToShareTypes(nil, readTypes: dataTypes) { (success, error) -> Void in
             if success == false {
                 self.displayNotAllowed()
             }
@@ -126,13 +172,13 @@ class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate, WCSe
         case .Ended:
             workoutDidEnd(date)
         default:
-            print("Unexpected state \(toState)")
+            heartRateLabel.setText("Unexpected state \(toState)")
         }
     }
     
     func workoutSession(workoutSession: HKWorkoutSession, didFailWithError error: NSError) {
         // Do nothing for now
-        NSLog("Workout error: \(error.userInfo)")
+        heartRateLabel.setText("Workout error: \(error.userInfo)")
     }
     
     func workoutDidStart(date : NSDate) {
@@ -152,18 +198,7 @@ class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate, WCSe
         }
     }
     
-
-    
-    func startWorkout() {
-        self.workoutSession = HKWorkoutSession(activityType: HKWorkoutActivityType.CrossTraining, locationType: HKWorkoutSessionLocationType.Indoor)
-        self.workoutSession?.delegate = self
-        healthStore.startWorkoutSession(self.workoutSession!)
-    }
-    
     func createHeartRateStreamingQuery(workoutStartDate: NSDate) -> HKQuery? {
-        // adding predicate will not work
-        // let predicate = HKQuery.predicateForSamplesWithStartDate(workoutStartDate, endDate: nil, options: HKQueryOptions.None)
-        
         guard let quantityType = HKObjectType.quantityTypeForIdentifier(HKQuantityTypeIdentifierHeartRate) else { return nil }
         
         let heartRateQuery = HKAnchoredObjectQuery(type: quantityType, predicate: nil, anchor: anchor, limit: Int(HKObjectQueryNoLimit)) { (query, sampleObjects, deletedObjects, newAnchor, error) -> Void in
@@ -183,10 +218,15 @@ class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate, WCSe
         guard let heartRateSamples = samples as? [HKQuantitySample] else {return}
         
         dispatch_async(dispatch_get_main_queue()) {
+          
             guard let sample = heartRateSamples.first else{return}
             let value = sample.quantity.doubleValueForUnit(self.heartRateUnit)
-            self.heartRateLabel.setText(String(UInt16(value)))
+            let intValue = Int(value)
+            self.heartSamples.append(value)
             
+            self.heartRateLabel.setText( String(UInt16(intValue)))
+            
+            self.detectAwayOrSleep()
             // retrieve source from sample
             /*let name = sample.sourceRevision.source.name
             self.updateDeviceName(name)
@@ -195,29 +235,5 @@ class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate, WCSe
         }
     }
     
-    
-    // =========================================================================
-    // MARK: - Private
-    /*
-    private func createStreamingQuery() -> HKQuery {
-        let predicate = HKQuery.predicateForSamplesWithStartDate(NSDate(), endDate: nil, options: .None)
-        
-        let query = HKAnchoredObjectQuery(type: heartRateType, predicate: predicate, anchor: nil, limit: Int(HKObjectQueryNoLimit)) { (query, samples, deletedObjects, anchor, error) -> Void in
-            self.addSamples(samples)
-        }
-        query.updateHandler = { (query, samples, deletedObjects, anchor, error) -> Void in
-            self.addSamples(samples)
-        }
-        
-        return query
-    }
-    
-    private func addSamples(samples: [HKSample]?) {
-        guard let samples = samples as? [HKQuantitySample] else { return }
-        guard let quantity = samples.last?.quantity else { return }
-        heartRateLabel.setText("\(quantity.doubleValueForUnit(heartRateUnit))")
-    }*/
-    
-    
-
+   
 }
