@@ -60,16 +60,35 @@ class ViewController: UIViewController {
     @IBAction func thresholdChanged(sender: AnyObject) {
         Configs.treshold = Double(thresholdSlider.value)
         self.thresholdLabel.text = String(Configs.treshold)
+        pushConfig()
     }
     
     @IBAction func samplesChanged(sender: AnyObject) {
         Configs.samples = Int(samplesSlider.value)
         self.samplesLabel.text = String(Configs.samples)
+        pushConfig()
     }
     
     @IBAction func stepsChanged(sender: AnyObject) {
         Configs.steps = Int(stepsSlider.value)
         self.stepsLabel.text = String(Configs.steps)
+        pushConfig()
+    }
+    
+    func pushConfig()
+    {
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let session = appDelegate.wcsession!
+        
+        let msg:[String:AnyObject] = ["threshold": Configs.treshold, "steps": Configs.steps, "samples": Configs.samples ]
+        
+        
+        session.sendMessage(msg, replyHandler: { (responses) -> Void in
+            print("done")
+        }) { (err) -> Void in
+            print(err)
+        }
+        
     }
 }
 

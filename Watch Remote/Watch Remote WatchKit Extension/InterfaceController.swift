@@ -70,20 +70,6 @@ class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate, WCSe
         }
     }
     
-    func readConfig()
-    {
-        let msg = ["config": "config"];
-        
-        session.sendMessage(msg, replyHandler: { (responses) -> Void in
-            self.threshold = responses["threshold"] as! Double
-            self.samplesLast = responses["samples"] as! Int
-            self.steps = responses["steps"] as! Int
-
-        }) { (err) -> Void in
-            print(err)
-        }
-    }
-
     
     @IBAction func play() {
         startAwayDetection()
@@ -92,7 +78,6 @@ class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate, WCSe
     
 
     @IBAction func pause() {
-        readConfig()
         stopAwayDetection()
         sendCommand("play")
     }
@@ -108,6 +93,7 @@ class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate, WCSe
     }
 
     
+   
     
     // =========================================================================
     // MARK: - Sleep and Away Detection
@@ -118,8 +104,30 @@ class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate, WCSe
     
     var heartSamples = [Double]()
     
+    
+    func session(session: WCSession, didReceiveMessage message: [String : AnyObject], replyHandler: ([String : AnyObject]) -> Void) {
+        
+        print("data received \(message)")
+        
+        if let threshold = message["threshold"]  as? Double {
+            self.threshold = threshold
+        }
+        if let samples = message["samples"]  as? Int {
+            self.samplesLast = samples
+        }
+        if let steps = message["steps"]  as? Int {
+            self.steps = steps
+        }
+    }
+    
     func detectAwayOrSleep()
     {
+        if samplesLast == 0
+        {
+            sleep()
+            return
+        }
+        
         if heartSamples.count < samplesLast * 2 {
             return // not enough data to make a decision
         }
@@ -133,7 +141,6 @@ class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate, WCSe
         {
             sleep()
         }
-        
     }
     
     func startAwayDetection() {
