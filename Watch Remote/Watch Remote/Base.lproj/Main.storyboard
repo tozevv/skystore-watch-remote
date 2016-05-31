@@ -25,15 +25,24 @@
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oqd-dh-wxk">
                                 <rect key="frame" x="132" y="109" width="96" height="30"/>
-                                <state key="normal" title="Play / Pause"/>
+                                <state key="normal" title="Play"/>
+                                <connections>
+                                    <action selector="leftClick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="9qY-59-ydw"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bSc-xB-nqo">
                                 <rect key="frame" x="252" y="61" width="96" height="30"/>
                                 <state key="normal" title="Right"/>
+                                <connections>
+                                    <action selector="leftClick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Pca-MV-Qh7"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xsh-Am-QVT">
                                 <rect key="frame" x="132" y="61" width="96" height="30"/>
-                                <state key="normal" title="Ok"/>
+                                <state key="normal" title="Select"/>
+                                <connections>
+                                    <action selector="leftClick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="mvz-PE-XqX"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bGZ-p7-Rc9">
                                 <rect key="frame" x="14" y="61" width="96" height="30"/>

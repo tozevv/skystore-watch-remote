@@ -35,7 +35,7 @@ class RokuRemote
     
     static func Current() -> RokuRemote
     {
-        return RokuRemote(ipAddress: "192.168.2.4");
+        return RokuRemote(ipAddress: "10.241.10.72");
     }
     
 }

@@ -28,8 +28,10 @@ class ViewController: UIViewController {
 
     @IBAction func leftClick(sender: AnyObject)
     {
+        let button = sender as! UIButton
+        let label = button.titleLabel!
         
-        RokuRemote.Current().sendCommand("left")
+        RokuRemote.Current().sendCommand(label.text!)
     }
 }
 
