@@ -23,25 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
             }
         }
     }
-    
-    func sendRokuCommand(keypressed: String)
-    {
-        let rokuBox: String = "10.241.10.72"
-     
-        if let url: NSURL = NSURL(string: "http://\(rokuBox):8060/keypress/\(keypressed)") {
-            
-            let urlSession = NSURLSession.sharedSession()
-            let request = NSMutableURLRequest(URL: url)
-            request.HTTPMethod = "POST"
-            
-            
-            let dataTask = urlSession.dataTaskWithRequest(request, completionHandler: {
-                (data,d1,d2) in print("done", data,d1,d2)
-            } )
-            dataTask.resume()
-        }
-    }
-    
+      
     func applicationShouldRequestHealthAuthorization(application: UIApplication) {
         let healthStore = HKHealthStore()
         healthStore.handleAuthorizationForExtensionWithCompletion {(success, error) -> Void in
@@ -53,7 +35,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
         print("data received")
         if let keypressed = message["keypressed"] as? String {
             print("pressing key:\(keypressed)")
-            sendRokuCommand(keypressed)
+            
+            RokuRemote.Current().sendCommand(keypressed)
         }
     }
 

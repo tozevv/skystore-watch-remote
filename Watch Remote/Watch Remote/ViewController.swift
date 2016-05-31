@@ -10,6 +10,7 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    @IBOutlet weak var leftButton: UIButton!
     
     @IBOutlet weak var label: UILabel!
     
@@ -25,5 +26,10 @@ class ViewController: UIViewController {
     }
 
 
+    @IBAction func leftClick(sender: AnyObject)
+    {
+        
+        RokuRemote.Current().sendCommand("left")
+    }
 }
 

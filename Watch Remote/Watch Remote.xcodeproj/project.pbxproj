@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4EB2A52A1CFD05B3003A344A /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4EB2A5291CFD05B3003A344A /* HealthKit.framework */; };
+		4EB2A52C1CFDA4D5003A344A /* Roku.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB2A52B1CFDA4D5003A344A /* Roku.swift */; };
 		4EDBDBCD1CFCFE6100245946 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EDBDBCC1CFCFE6100245946 /* AppDelegate.swift */; };
 		4EDBDBCF1CFCFE6100245946 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EDBDBCE1CFCFE6100245946 /* ViewController.swift */; };
 		4EDBDBD21CFCFE6100245946 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4EDBDBD01CFCFE6100245946 /* Main.storyboard */; };
@@ -70,6 +71,7 @@
 
 /* Begin PBXFileReference section */
 		4EB2A5291CFD05B3003A344A /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS2.2.sdk/System/Library/Frameworks/HealthKit.framework; sourceTree = DEVELOPER_DIR; };
+		4EB2A52B1CFDA4D5003A344A /* Roku.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Roku.swift; sourceTree = "<group>"; };
 		4EDBDBC91CFCFE6000245946 /* Watch Remote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Watch Remote.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4EDBDBCC1CFCFE6100245946 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4EDBDBCE1CFCFE6100245946 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -145,6 +147,7 @@
 				4EDBDBD31CFCFE6100245946 /* Assets.xcassets */,
 				4EDBDBD51CFCFE6100245946 /* LaunchScreen.storyboard */,
 				4EDBDBD81CFCFE6100245946 /* Info.plist */,
+				4EB2A52B1CFDA4D5003A344A /* Roku.swift */,
 			);
 			path = "Watch Remote";
 			sourceTree = "<group>";
@@ -321,6 +324,7 @@
 			files = (
 				4EDBDBCF1CFCFE6100245946 /* ViewController.swift in Sources */,
 				4EDBDBCD1CFCFE6100245946 /* AppDelegate.swift in Sources */,
+				4EB2A52C1CFDA4D5003A344A /* Roku.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
