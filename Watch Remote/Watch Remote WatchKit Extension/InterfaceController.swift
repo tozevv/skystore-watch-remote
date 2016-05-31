@@ -307,6 +307,7 @@ class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate, WCSe
     }
     
     func workoutDidStart(date : NSDate) {
+        print("workoutDidStart")
         if let query = createHeartRateStreamingQuery(date) {
             healthStore.executeQuery(query)
         } else {
@@ -315,17 +316,25 @@ class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate, WCSe
         
         if let query = createStepsStreamingQuery(date) {
             healthStore.executeQuery(query)
+        } else {
+            stepsLabel.setText("cannot start")
         }
-        
-        
     }
     
     func workoutDidEnd(date : NSDate) {
+        print("workoutDidEnd")
         if let query = createHeartRateStreamingQuery(date) {
             healthStore.stopQuery(query)
             heartRateLabel.setText("---")
         } else {
             heartRateLabel.setText("cannot stop")
+        }
+        
+        if let query = createStepsStreamingQuery(date) {
+            healthStore.stopQuery(query)
+            stepsLabel.setText("---")
+        } else {
+            stepsLabel.setText("cannot stop")
         }
     }
     
