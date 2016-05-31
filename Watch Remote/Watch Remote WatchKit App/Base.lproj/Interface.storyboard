@@ -10,6 +10,15 @@
             <objects>
                 <controller id="AgC-eL-Hgc" customClass="InterfaceController" customModule="Watch_Remote_WatchKit_App" customModuleProvider="target">
                     <items>
+                        <group width="1" alignment="left" hidden="YES" id="s90-cl-y63">
+                            <items>
+                                <button width="1" alignment="left" title="Zzzzz" id="ZRF-dQ-MPw">
+                                    <connections>
+                                        <action selector="dismissSleepOrAway" destination="AgC-eL-Hgc" id="dfa-aZ-WV0"/>
+                                    </connections>
+                                </button>
+                            </items>
+                        </group>
                         <group width="1" height="60" alignment="left" id="Q38-Oa-5xo">
                             <items>
                                 <imageView alignment="left" id="lr0-gl-Myj"/>
@@ -100,6 +109,7 @@
                     <connections>
                         <outlet property="heartRateLabel" destination="X0Q-Mr-jR6" id="hTl-V8-xsW"/>
                         <outlet property="imagePackshot" destination="lr0-gl-Myj" id="TFE-pi-bbo"/>
+                        <outlet property="sleepButton" destination="s90-cl-y63" id="jCG-nJ-1nK"/>
                         <outlet property="stepsLabel" destination="iQH-E3-vmH" id="alv-OW-uwm"/>
                     </connections>
                 </controller>

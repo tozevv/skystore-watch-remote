@@ -14,6 +14,7 @@ import CoreMotion
 
 class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate, WCSessionDelegate {
     
+    @IBOutlet var sleepButton: WKInterfaceGroup!
     @IBOutlet var heartRateLabel: WKInterfaceLabel!
     @IBOutlet var stepsLabel: WKInterfaceLabel!
     @IBOutlet var imagePackshot: WKInterfaceImage!
@@ -112,6 +113,7 @@ class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate, WCSe
     @IBAction func dismissSleepOrAway()
     {
         timer.invalidate()
+        sleepButton.setHidden(true)
         processingLock = false
     }
     
@@ -119,7 +121,7 @@ class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate, WCSe
       
         
         WKInterfaceDevice.currentDevice().playHaptic(.Click)
-        // show button
+        sleepButton.setHidden(false)
         
         timer = NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: #selector(sleepTimeElapsed), userInfo: nil, repeats: false)
         
@@ -131,7 +133,7 @@ class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate, WCSe
         self.stopAwayDetection()
         
         WKInterfaceDevice.currentDevice().playHaptic(.Click)
-        // show button
+        sleepButton.setHidden(false)
         
         timer = NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: #selector(awayTimeElapsed), userInfo: nil, repeats: false)
         
@@ -139,7 +141,8 @@ class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate, WCSe
     
     func sleepTimeElapsed(timer: NSTimer!)
     {
-        // hide button
+        
+        sleepButton.setHidden(true)
         processingLock = false
         self.stopAwayDetection()
         
@@ -149,7 +152,8 @@ class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate, WCSe
     
     func awayTimeElapsed(timer: NSTimer!)
     {
-        // hide button
+        
+        sleepButton.setHidden(true)
         processingLock = false
         self.stopAwayDetection()
         
