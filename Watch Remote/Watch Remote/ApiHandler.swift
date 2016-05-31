@@ -14,9 +14,9 @@ class ApiHandler {
         var result = [AssetData]();
         
         let movie1 = AssetData();
-        movie1.Title = "Movie #1"
-        movie1.Id = "211ae9e1-8c10-4fcf-b260-eb6dadf3b1ad"
-        movie1.ImagePackshotUrl = "http://qs.int.skystore.com/api/img/asset/en/66D8BB8A-E4E8-4422-9242-603110084545_C73B3A14-85C9-47E6-A329-DEB3E52329E2_2016-1-11-T15-10-58.jpg?s=260x371"
+        movie1.Title = "Inglourious B*****ds"
+        movie1.Id = "cbe99dbf-4438-4eb5-88f1-219e06e034ab"
+        movie1.ImagePackshotUrl = "http://qs.int.skystore.com/api/img/asset/en/66D8BB8A-E4E8-4422-9242-603110084545_DF2BEBBD-D25D-463E-930B-002767E151B9_2015-10-17-T18-50-34.jpg?s=260x371"
         result.append(movie1)
         
         return result;

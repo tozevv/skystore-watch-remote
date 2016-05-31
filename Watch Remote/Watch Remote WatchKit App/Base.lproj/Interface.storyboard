@@ -10,7 +10,11 @@
             <objects>
                 <controller id="AgC-eL-Hgc" customClass="InterfaceController" customModule="Watch_Remote_WatchKit_App" customModuleProvider="target">
                     <items>
-                        <imageView height="58" alignment="left" id="CIx-7r-6WZ"/>
+                        <group width="1" height="60" alignment="left" id="Q38-Oa-5xo">
+                            <items>
+                                <imageView alignment="left" id="lr0-gl-Myj"/>
+                            </items>
+                        </group>
                         <group width="1" alignment="left" semanticContentAttribute="spatial" id="gm7-Uw-esR">
                             <items>
                                 <button width="64" alignment="left" title="Play" id="Ol7-V0-gfc">
@@ -25,7 +29,7 @@
                                 </button>
                             </items>
                         </group>
-                        <separator alignment="left" id="hqa-l3-TKS"/>
+                        <separator alignment="left" alpha="0.40000000000000002" id="hqa-l3-TKS"/>
                         <group width="1" alignment="left" id="PE6-5W-gpI">
                             <items>
                                 <button width="42" height="40" alignment="left" title="←" id="N20-ci-RUu"/>
@@ -66,8 +70,9 @@
                         </items>
                     </menu>
                     <connections>
-                        <outlet property="button" destination="Ol7-V0-gfc" id="Q3Q-9i-2GM"/>
                         <outlet property="heartRateLabel" destination="X0Q-Mr-jR6" id="hTl-V8-xsW"/>
+                        <outlet property="imagePackshot" destination="lr0-gl-Myj" id="TFE-pi-bbo"/>
+                        <outlet property="stepsLabel" destination="iQH-E3-vmH" id="alv-OW-uwm"/>
                     </connections>
                 </controller>
             </objects>
@@ -106,7 +111,7 @@
                     </connections>
                 </controller>
             </objects>
-            <point key="canvasLocation" x="164" y="516"/>
+            <point key="canvasLocation" x="164" y="552"/>
         </scene>
     </scenes>
 </document>
