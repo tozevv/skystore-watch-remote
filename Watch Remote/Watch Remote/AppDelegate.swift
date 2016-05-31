@@ -31,7 +31,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
         if let url: NSURL = NSURL(string: "http://\(rokuBox):8060/keypress/\(keypressed)") {
             
             let urlSession = NSURLSession.sharedSession()
-            let dataTask = urlSession.dataTaskWithURL(url, completionHandler: {(data,_,_) in print("done") } )
+            let request = NSMutableURLRequest(URL: url)
+            request.HTTPMethod = "POST"
+            
+            
+            let dataTask = urlSession.dataTaskWithRequest(request, completionHandler: {
+                (data,d1,d2) in print("done", data,d1,d2)
+            } )
             dataTask.resume()
         }
     }
