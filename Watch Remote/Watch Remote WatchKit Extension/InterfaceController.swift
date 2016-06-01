@@ -21,12 +21,18 @@ class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate, WCSe
     
     let healthStore = HKHealthStore()
     var awayDetection = false
-    var timer = NSTimer()
+    var snoozeTimer = NSTimer()
+    let snoozeInterval = 5.0
+    
+    var detectTimer = NSTimer()
+    var detectInterval = 10.0
     
     var workoutSession : HKWorkoutSession?
     let heartRateUnit = HKUnit(fromString: "count/min")
     let stepsUnit = HKUnit.countUnit()
     var anchor = HKQueryAnchor(fromValue: Int(HKAnchoredObjectQueryNoAnchor))
+    var anchor2 = HKQueryAnchor(fromValue: Int(HKAnchoredObjectQueryNoAnchor))
+    
     var session: WCSession!
     
     override func awakeWithContext(context: AnyObject?) {
@@ -110,54 +116,11 @@ class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate, WCSe
 
     @IBAction func dismissSleepOrAway()
     {
-        timer.invalidate()
+        snoozeTimer.invalidate()
         sleepButton.setHidden(true)
-        processingLock = false
     }
     
-    func sleep() {
-      
-        
-        WKInterfaceDevice.currentDevice().playHaptic(.Click)
-        sleepButton.setHidden(false)
-        
-        timer = NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: #selector(sleepTimeElapsed), userInfo: nil, repeats: false)
-        
-        
-        self.startAwayDetection()
-    }
-    
-    func away() {
-        self.stopAwayDetection()
-        
-        WKInterfaceDevice.currentDevice().playHaptic(.Click)
-        sleepButton.setHidden(false)
-        
-        timer = NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: #selector(awayTimeElapsed), userInfo: nil, repeats: false)
-        
-    }
-    
-    func sleepTimeElapsed(timer: NSTimer!)
-    {
-        
-        sleepButton.setHidden(true)
-        processingLock = false
-        self.stopAwayDetection()
-        
-        sendCommand("volumedown")
-    }
-
-    
-    func awayTimeElapsed(timer: NSTimer!)
-    {
-        
-        sleepButton.setHidden(true)
-        processingLock = false
-        self.stopAwayDetection()
-        
-        sendCommand("search")
-    }
-
+ 
     @IBAction func myLibraryMenu() {
         pushControllerWithName("MyLibrary",
             context: [
@@ -178,7 +141,6 @@ class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate, WCSe
     
     var heartSamples = [Double]()
     var totalSteps = 0
-    var processingLock = false
     
     func session(session: WCSession, didReceiveMessage message: [String : AnyObject], replyHandler: ([String : AnyObject]) -> Void) {
         
@@ -195,28 +157,26 @@ class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate, WCSe
         }
     }
     
-    func detectAwayOrSleep()
+    func detectAwayOrSleep(timer: NSTimer!)
     {
-        if (processingLock) {
-            return;
-        }
-        processingLock = true
+        print("detecting state")
         
         if totalSteps > steps
         {
+            print("triggered away")
             away()
             return
         }
         
         if samplesLast == 0
         {
+            print("triggered sleep")
             sleep()
             return
         }
         
         if heartSamples.count < samplesLast * 2
         {
-            processingLock = false
             return // not enough data to make a decision
         }
         
@@ -226,10 +186,9 @@ class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate, WCSe
         
         if (heartLastAverage / heartAverage) <= threshold
         {
+            print("triggered sleep")
             sleep()
         }
-        
-        processingLock = false
     }
     
     func startAwayDetection() {
@@ -237,9 +196,10 @@ class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate, WCSe
             heartSamples = [Double]()
             totalSteps = 0;
             
-            self.workoutSession = HKWorkoutSession(activityType: HKWorkoutActivityType.CrossTraining, locationType: HKWorkoutSessionLocationType.Indoor)
+            self.workoutSession = HKWorkoutSession(activityType: HKWorkoutActivityType.Walking, locationType: HKWorkoutSessionLocationType.Indoor)
             self.workoutSession?.delegate = self
             healthStore.startWorkoutSession(self.workoutSession!)
+            detectTimer =  NSTimer.scheduledTimerWithTimeInterval(detectInterval, target: self, selector: #selector(detectAwayOrSleep), userInfo: nil, repeats: true)
         }
         awayDetection = true
     }
@@ -253,10 +213,51 @@ class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate, WCSe
             if let workout = self.workoutSession {
                 healthStore.endWorkoutSession(workout)
             }
+            detectTimer.invalidate()
         }
         awayDetection = false
     }
     
+    func sleep() {
+        
+        
+        WKInterfaceDevice.currentDevice().playHaptic(.Click)
+        sleepButton.setHidden(false)
+        
+        snoozeTimer = NSTimer.scheduledTimerWithTimeInterval(snoozeInterval, target: self, selector: #selector(sleepTimeElapsed), userInfo: nil, repeats: false)
+        
+        
+        self.startAwayDetection()
+    }
+    
+    func away() {
+        self.stopAwayDetection()
+        
+        WKInterfaceDevice.currentDevice().playHaptic(.Click)
+        sleepButton.setHidden(false)
+        
+        snoozeTimer = NSTimer.scheduledTimerWithTimeInterval(snoozeInterval, target: self, selector: #selector(awayTimeElapsed), userInfo: nil, repeats: false)
+        
+    }
+    
+    func sleepTimeElapsed(timer: NSTimer!)
+    {
+        sleepButton.setHidden(true)
+        self.stopAwayDetection()
+        
+        sendCommand("volumedown")
+    }
+    
+    
+    func awayTimeElapsed(timer: NSTimer!)
+    {
+        
+        sleepButton.setHidden(true)
+        self.stopAwayDetection()
+        
+        sendCommand("search")
+    }
+
     
     func setupWorkout() {
         
@@ -356,17 +357,18 @@ class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate, WCSe
     }
     
     func createStepsStreamingQuery(workoutStartDate: NSDate) -> HKQuery? {
+        
         guard let quantityType = HKObjectType.quantityTypeForIdentifier(HKQuantityTypeIdentifierStepCount) else { return nil }
         
-        let query = HKAnchoredObjectQuery(type: quantityType, predicate: nil, anchor: anchor, limit: Int(HKObjectQueryNoLimit)) { (query, sampleObjects, deletedObjects, newAnchor, error) -> Void in
+        let query = HKAnchoredObjectQuery(type: quantityType, predicate: nil, anchor: anchor2, limit: Int(HKObjectQueryNoLimit)) { (query, sampleObjects, deletedObjects, newAnchor, error) -> Void in
             guard let newAnchor = newAnchor else {return}
-            self.anchor = newAnchor
+            self.anchor2 = newAnchor
             self.updateSteps(sampleObjects)
         }
         
         query.updateHandler = {(query, samples, deleteObjects, newAnchor, error) -> Void in
-            self.anchor = newAnchor!
-            self.updateHeartRate(samples)
+            self.anchor2 = newAnchor!
+            self.updateSteps(samples)
         }
         
         return query
@@ -382,16 +384,8 @@ class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate, WCSe
                 let value = sample.quantity.doubleValueForUnit(self.heartRateUnit)
                 let intValue = Int(value)
                 self.heartSamples.append(value)
-            
                 self.heartRateLabel.setText( String(UInt16(intValue)))
             }
-            
-            self.detectAwayOrSleep()
-            // retrieve source from sample
-            /*let name = sample.sourceRevision.source.name
-            self.updateDeviceName(name)
-            self.animateHeart()*/
-            
         }
     }
     
@@ -404,8 +398,6 @@ class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate, WCSe
             let value = sample.quantity.doubleValueForUnit(self.stepsUnit)
             self.totalSteps += Int(value)
             self.stepsLabel.setText(String(self.totalSteps))
-            self.detectAwayOrSleep()
-            
         }
     }
 }
