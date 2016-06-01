@@ -21,6 +21,8 @@ class RokuRemote
     {
         if let url: NSURL = NSURL(string: "http://\(rokuBoxIp):8060/keypress/\(keypressed)") {
             
+            print(url)
+            
             let urlSession = NSURLSession.sharedSession()
             let request = NSMutableURLRequest(URL: url)
             request.HTTPMethod = "POST"
@@ -35,7 +37,7 @@ class RokuRemote
     
     static func Current() -> RokuRemote
     {
-        return RokuRemote(ipAddress: "192.168.2.34");
+        return RokuRemote(ipAddress: boxIp);
     }
     
 }

@@ -20,6 +20,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var thresholdLabel: UILabel!
     @IBOutlet weak var samplesLabel: UILabel!
     @IBOutlet weak var stepsLabel: UILabel!
+    @IBOutlet weak var rokuIpText: UITextField!
     
     override func viewDidLoad() {
         self.thresholdSlider.minimumValue = 0
@@ -37,6 +38,7 @@ class ViewController: UIViewController {
         self.stepsSlider.value = Float(Configs.steps)
         self.stepsLabel.text = String(Configs.steps)
         
+        self.rokuIpText.text = RokuRemote.boxIp
         
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -73,6 +75,10 @@ class ViewController: UIViewController {
         Configs.steps = Int(stepsSlider.value)
         self.stepsLabel.text = String(Configs.steps)
         pushConfig()
+    }
+    
+    @IBAction func rokuIpBtnSave(sender: AnyObject) {
+        RokuRemote.boxIp = rokuIpText.text!
     }
     
     func pushConfig()

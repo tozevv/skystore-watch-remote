@@ -24,19 +24,13 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Control" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hfv-jz-CdN">
-                                <rect key="frame" x="20" y="315" width="79" height="21"/>
+                                <rect key="frame" x="20" y="404" width="79" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Treshold" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iZi-gq-dw4">
                                 <rect key="frame" x="20" y="62" width="88" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="0" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5uy-nA-cMx">
-                                <rect key="frame" x="116" y="62" width="233" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
@@ -60,28 +54,28 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oqd-dh-wxk">
-                                <rect key="frame" x="72" y="388" width="96" height="30"/>
+                                <rect key="frame" x="72" y="477" width="96" height="30"/>
                                 <state key="normal" title="Play"/>
                                 <connections>
                                     <action selector="leftClick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="9qY-59-ydw"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bSc-xB-nqo">
-                                <rect key="frame" x="151" y="344" width="96" height="30"/>
+                                <rect key="frame" x="151" y="433" width="96" height="30"/>
                                 <state key="normal" title="Right"/>
                                 <connections>
                                     <action selector="leftClick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Pca-MV-Qh7"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xsh-Am-QVT">
-                                <rect key="frame" x="82" y="344" width="77" height="30"/>
+                                <rect key="frame" x="82" y="433" width="77" height="30"/>
                                 <state key="normal" title="Select"/>
                                 <connections>
                                     <action selector="leftClick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="mvz-PE-XqX"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bGZ-p7-Rc9">
-                                <rect key="frame" x="20" y="344" width="54" height="30"/>
+                                <rect key="frame" x="20" y="433" width="54" height="30"/>
                                 <state key="normal" title="Left"/>
                                 <connections>
                                     <action selector="leftClick:" destination="BYZ-38-t0r" eventType="primaryActionTriggered" id="XkT-TL-VeA"/>
@@ -112,12 +106,37 @@
                                     <action selector="stepsChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="v3B-TB-8Vb"/>
                                 </connections>
                             </slider>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="9S5-aP-Fe7">
+                                <rect key="frame" x="20" y="329" width="189" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Roku Ip" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FN6-X7-kto">
+                                <rect key="frame" x="20" y="299" width="79" height="22"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="0" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5uy-nA-cMx">
+                                <rect key="frame" x="116" y="62" width="233" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IHf-pW-P6H">
+                                <rect key="frame" x="217" y="329" width="46" height="30"/>
+                                <state key="normal" title="Save"/>
+                                <connections>
+                                    <action selector="rokuIpBtnSave:" destination="BYZ-38-t0r" eventType="touchUpInside" id="KYh-hZ-6Ke"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <connections>
                         <outlet property="label" destination="5jm-vY-XBm" id="WYI-Ef-4J5"/>
                         <outlet property="leftButton" destination="bGZ-p7-Rc9" id="RKZ-it-Lqt"/>
+                        <outlet property="rokuIpText" destination="9S5-aP-Fe7" id="SrS-Sz-0SE"/>
                         <outlet property="samplesLabel" destination="gY5-di-aB5" id="NeY-zq-AZP"/>
                         <outlet property="samplesSlider" destination="WdU-Bv-Dyg" id="7Lt-Ek-27A"/>
                         <outlet property="stepsLabel" destination="XDh-ZN-MPW" id="c3y-gA-XHn"/>
