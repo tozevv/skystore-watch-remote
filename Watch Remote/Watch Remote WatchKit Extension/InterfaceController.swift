@@ -31,6 +31,8 @@ class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate, WCSe
     let heartRateUnit = HKUnit(fromString: "count/min")
     let stepsUnit = HKUnit.countUnit()
     var anchor = HKQueryAnchor(fromValue: Int(HKAnchoredObjectQueryNoAnchor))
+    var anchor2 = HKQueryAnchor(fromValue: Int(HKAnchoredObjectQueryNoAnchor))
+    
     var session: WCSession!
     
     override func awakeWithContext(context: AnyObject?) {
@@ -194,7 +196,7 @@ class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate, WCSe
             heartSamples = [Double]()
             totalSteps = 0;
             
-            self.workoutSession = HKWorkoutSession(activityType: HKWorkoutActivityType.CrossTraining, locationType: HKWorkoutSessionLocationType.Indoor)
+            self.workoutSession = HKWorkoutSession(activityType: HKWorkoutActivityType.Walking, locationType: HKWorkoutSessionLocationType.Indoor)
             self.workoutSession?.delegate = self
             healthStore.startWorkoutSession(self.workoutSession!)
             detectTimer =  NSTimer.scheduledTimerWithTimeInterval(detectInterval, target: self, selector: #selector(detectAwayOrSleep), userInfo: nil, repeats: true)
@@ -355,17 +357,18 @@ class InterfaceController: WKInterfaceController, HKWorkoutSessionDelegate, WCSe
     }
     
     func createStepsStreamingQuery(workoutStartDate: NSDate) -> HKQuery? {
+        
         guard let quantityType = HKObjectType.quantityTypeForIdentifier(HKQuantityTypeIdentifierStepCount) else { return nil }
         
-        let query = HKAnchoredObjectQuery(type: quantityType, predicate: nil, anchor: anchor, limit: Int(HKObjectQueryNoLimit)) { (query, sampleObjects, deletedObjects, newAnchor, error) -> Void in
+        let query = HKAnchoredObjectQuery(type: quantityType, predicate: nil, anchor: anchor2, limit: Int(HKObjectQueryNoLimit)) { (query, sampleObjects, deletedObjects, newAnchor, error) -> Void in
             guard let newAnchor = newAnchor else {return}
-            self.anchor = newAnchor
+            self.anchor2 = newAnchor
             self.updateSteps(sampleObjects)
         }
         
         query.updateHandler = {(query, samples, deleteObjects, newAnchor, error) -> Void in
-            self.anchor = newAnchor!
-            self.updateHeartRate(samples)
+            self.anchor2 = newAnchor!
+            self.updateSteps(samples)
         }
         
         return query
