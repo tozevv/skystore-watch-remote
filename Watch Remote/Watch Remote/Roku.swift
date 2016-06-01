@@ -12,6 +12,7 @@ import UIKit
 class RokuRemote
 {
     var rokuBoxIp: String!
+    static var boxIp = "192.168.2.34"
     
     init(ipAddress: String) {
         rokuBoxIp = ipAddress
